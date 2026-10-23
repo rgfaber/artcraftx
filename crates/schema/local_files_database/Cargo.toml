@@ -26,7 +26,7 @@ log.workspace = true
 # compile-time macros). The workspace's `.sqlx` offline data and the single
 # global DATABASE_URL can only describe one schema; runtime queries keep this
 # second database free of the `cargo sqlx prepare` dance.
-sqlx = { package = "sqlx", version = "0.7.4", features = ["runtime-tokio-rustls", "sqlite", "chrono"] }
+sqlx = { package = "sqlx", version = "0.8", features = ["runtime-tokio-rustls", "sqlite", "chrono"] }
 
 [dev-dependencies]
 # Integration tests run queries against a throwaway migrated database.

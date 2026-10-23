@@ -36,7 +36,7 @@
       {
         "name": "is_batch_generation",
         "ordinal": 6,
-        "type_info": "Int64"
+        "type_info": "Integer"
       },
       {
         "name": "frontend_caller",

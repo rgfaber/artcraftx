@@ -36,7 +36,7 @@
       {
         "name": "is_batch_generation",
         "ordinal": 6,
-        "type_info": "Int64"
+        "type_info": "Integer"
       },
       {
         "name": "frontend_caller",
@@ -101,17 +101,17 @@
       {
         "name": "created_at: DateTime<Utc>",
         "ordinal": 19,
-        "type_info": "Int64"
+        "type_info": "Integer"
       },
       {
         "name": "updated_at: DateTime<Utc>",
         "ordinal": 20,
-        "type_info": "Int64"
+        "type_info": "Integer"
       },
       {
         "name": "completed_at: DateTime<Utc>",
         "ordinal": 21,
-        "type_info": "Int64"
+        "type_info": "Integer"
       }
     ],
     "parameters": {
