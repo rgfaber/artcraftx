@@ -71,7 +71,8 @@ jobs:
 
       # These six crates read fixtures from test_data/, which is in neither this
       # repository nor its upstream, so their tests fail on a clean checkout of
-      # main as well. Excluded here, filed separately; every other crate runs.
+      # main as well. Excluded here; filed as macula-io/macula-craft-collab#23.
+      # Every other crate runs.
       - name: cargo test
         env:
           SQLX_OFFLINE: 'true'
