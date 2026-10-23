@@ -92,12 +92,24 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Install cargo-audit
-        run: cargo install cargo-audit --locked
+        run: cargo install cargo-audit --version 0.22.2 --locked
 
       - name: Gate on the rustls and ring advisories
         run: |
-          cargo audit --json > audit.json || true
-          ids=$(jq -r '[.vulnerabilities.list[]?.advisory.id] + [.warnings.list[]?.advisory.id] | .[]' audit.json | sort -u)
+          set +e
+          cargo audit --json > audit.json
+          audit_status=$?
+          set -e
+          # cargo-audit exits 1 when it reports findings; any other non-zero is the
+          # tool itself failing (advisory-db fetch, crash) and must not pass the gate.
+          if [ "$audit_status" -ne 0 ] && [ "$audit_status" -ne 1 ]; then
+            echo "::error::cargo audit failed with exit code $audit_status"
+            exit "$audit_status"
+          fi
+          jq -e '.vulnerabilities.list' audit.json > /dev/null || {
+            echo "::error::cargo audit produced no vulnerability report"; exit 1; }
+          # .warnings is an object keyed by kind (unmaintained, unsound, yanked).
+          ids=$(jq -r '[.vulnerabilities.list[]?.advisory.id] + [.warnings[][]?.advisory.id] | .[]' audit.json | sort -u)
           echo "advisories reported for this lock:"; echo "$ids" | sed 's/^/  /'
           status=0
           for id in RUSTSEC-2026-0346 RUSTSEC-2026-0347 RUSTSEC-2026-0348 RUSTSEC-2026-0349 RUSTSEC-2025-0009; do
